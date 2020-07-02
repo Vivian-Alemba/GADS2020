@@ -1,0 +1,98 @@
+package com.example.pluralsightphase1;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import java.util.List;
+
+@SuppressWarnings("ALL")
+public class NoteActivity extends AppCompatActivity {
+    public static final String NOTE_POSITION ="NOTE_POSITION";
+    private NoteInfo mNoteInfo;
+
+    private Spinner mSpinner;
+    private EditText mTextNoteTitle;
+    private EditText mTextNoteText;
+    private Button btnClear;
+    private boolean mIsNewNote;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate( savedInstanceState );
+        setContentView( R.layout.activity_note );
+
+
+        mSpinner=findViewById( R.id.spinner_show );
+        mTextNoteTitle =findViewById( R.id.edit_notes );
+        mTextNoteText =findViewById( R.id.edit_content );
+
+
+
+        List<CourseInfo> courses=DataManager.getInstance().getCourses();
+        ArrayAdapter<CourseInfo>adapter=new ArrayAdapter<>( this,android.R.layout.simple_spinner_item,courses );
+        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+        mSpinner.setAdapter( adapter );
+
+
+        btnClear=findViewById( R.id.btn_click );
+        btnClear.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        } );
+
+
+        intentDisplayValues();
+
+
+
+        if(!mIsNewNote)
+
+        displayNote(mSpinner, mTextNoteTitle, mTextNoteText );
+
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate( R.menu.note_menu,menu );
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemClicked=item.getItemId();
+        if(itemClicked==R.id.action_send_email){
+            sendEmail();
+
+            return true;
+        }
+        return super.onOptionsItemSelected( item );
+    }
+
+    private void sendEmail() {
+        CourseInfo courseInfo=(CourseInfo)mSpinner.getSelectedItem();
+        String subject= mTextNoteText.getText().toString();
+        String text="Check out what i learned in Teams mTextNoteTitle \n\n" + courseInfo.getTitle() + "\n\n" + mTextNoteText.getText();
+        Intent intent=new Intent( Intent.ACTION_SEND );
+        intent.setType( "message/rfc2822" );
+        intent.putExtra( Intent.EXTRA_SUBJECT,subject );
+        intent.putExtra( Intent.EXTRA_TEXT,text );
+        startActivity( intent );
+
+    }
+
+    @Override
+    protected void 
