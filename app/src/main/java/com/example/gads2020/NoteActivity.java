@@ -283,10 +283,10 @@ public class NoteActivity extends AppCompatActivity {
 
         mIsNewNote = mNoteId == ID_NOT_SET;
         if(mIsNewNote) {
-
             createNewNote();
+        }else{
+        mNoteInfo=DataManager.getInstance().getNotes().get( mNoteId );
         }
-        //mNoteInfo=DataManager.getInstance().getNotes().get( mNoteId );
         Log.i( TAG,"mNoteId" + mNoteId );
 
 
