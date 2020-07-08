@@ -20,6 +20,7 @@ public class DataManager {
     private List<NoteInfo> mNotes;
 
     static DataManager getInstance() {
+
         if(ourInstance == null) {
             ourInstance = new DataManager();
 //            ourInstance.initializeCourses();

@@ -108,8 +108,8 @@
         <item>http://twitter.com</item>
     </string-array>
     <string name="pref_default_favorite_social">http://plus.google.com</string>
-
-
+    <string name="notetitle">NoteTitle</string>
+    <string name="notetext">NoteText</string>
 
 
 </resources>
