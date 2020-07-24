@@ -1,11 +1,18 @@
 package com.example.gads2020;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
+@SuppressWarnings("ALL")
 public final class NoteKeeperDatabaseContract {
+
+
     private NoteKeeperDatabaseContract(){}
 
     public static final class CourseInfoEntry implements BaseColumns {
+
+
+
 
         public static final String TABLE_NAME="course_info";
         public static final String COLUMN_COURSE_ID="course_id";
@@ -34,6 +41,8 @@ public final class NoteKeeperDatabaseContract {
     }
 
     public static final class NoteInfoEntry implements BaseColumns{
+
+
         public static String TABLE_NAME="note_info";
         public static String COLUMN_NOTE_TITLE="note_title";
         public static String COLUMN_NOTE_TEXT="note_text";

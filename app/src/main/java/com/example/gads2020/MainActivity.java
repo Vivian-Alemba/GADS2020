@@ -41,6 +41,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import static com.example.gads2020.NoteKeeperDatabaseContract.*;
+import static com.example.gads2020.NoteKeeperProviderContract.*;
 
 @SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
         initializeDisplayContent();
+
 
 
     }
@@ -273,37 +275,27 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        android.content.CursorLoader cursorLoader = null;
-        if (id == LOADER_NOTES)
-            cursorLoader = new CursorLoader( this ) {
-                @Override
-                public Cursor loadInBackground() {
-                    SQLiteDatabase db = mNoteKeeperOpenHelper.getReadableDatabase();
+
+        CursorLoader loader=null;
 
 
-                   final String[] noteColumns = {
-                           NoteInfoEntry.getQName( NoteInfoEntry._ID),
-                            NoteInfoEntry.COLUMN_NOTE_TITLE,
-                           // NoteInfoEntry.getQName( NoteInfoEntry.COLUMN_COURSE_ID),
-                           CourseInfoEntry.COLUMN_COURSE_TITLE
-                    };
-
-                   final String noteOrderBy = CourseInfoEntry.COLUMN_COURSE_TITLE + " ," + NoteInfoEntry.COLUMN_NOTE_TITLE;
-
-                    //joining course-info and note-info table
-                    //note_info JOIN course_info on note_info.course_id=course_info.course_id
-                    String tablesWithJoin=NoteInfoEntry.TABLE_NAME + " JOIN " +
-                            CourseInfoEntry.TABLE_NAME + " ON " +
-                            NoteInfoEntry.getQName( NoteInfoEntry.COLUMN_COURSE_ID )+ " = " +
-                            CourseInfoEntry.getQName( CourseInfoEntry.COLUMN_COURSE_ID );
-//
-
-                    return db.query( tablesWithJoin, noteColumns, null, null,
-                            null, null, noteOrderBy );
-
-                }
+        if (id == LOADER_NOTES) {
+            final String[] noteColumns = {
+                    Notes._ID,
+                    Notes.COLUMN_NOTE_TITLE,
+                    Notes.COLUMN_COURSE_TITLE
             };
-        return cursorLoader;
+
+            final String noteOrderBy = Notes.COLUMN_COURSE_TITLE + "," + Notes.COLUMN_NOTE_TITLE;
+
+            loader= new CursorLoader( this, Notes.CONTENT_EXPANDED_URI,noteColumns,
+                    null,null,noteOrderBy );
+
+
+        }
+
+
+        return loader;
     }
 
 

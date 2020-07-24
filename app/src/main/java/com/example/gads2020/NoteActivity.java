@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -27,6 +28,7 @@ import android.widget.Spinner;
 
 import static com.example.gads2020.NoteKeeperDatabaseContract.*;
 import static com.example.gads2020.NoteKeeperDatabaseContract.NoteInfoEntry;
+import static com.example.gads2020.NoteKeeperProviderContract.*;
 
 @SuppressWarnings("ALL")
 public class NoteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -429,23 +431,31 @@ public class NoteActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private CursorLoader createLoaderCourses() {
+
        mCoursesQueryFinished = false;
-
-        return new CursorLoader( this ){
-            @Override
-            public Cursor loadInBackground() {
-
-                SQLiteDatabase db=mNoteKeeperOpenHelper.getReadableDatabase();
-
-                String[] courseColumn={
-                        CourseInfoEntry.COLUMN_COURSE_TITLE,
-                        CourseInfoEntry.COLUMN_COURSE_ID,
-                        CourseInfoEntry._ID
-                };
-                return  db.query( CourseInfoEntry.TABLE_NAME,courseColumn,null,null,null,null,
-                        CourseInfoEntry.COLUMN_COURSE_TITLE );
-            }
+       Uri uri= Courses.CONTENT_URI;
+        String[] courseColumn={
+                Courses.COLUMN_COURSE_TITLE,
+                Courses.COLUMN_COURSE_ID,
+                Courses._ID
         };
+        return new CursorLoader( this,uri,courseColumn,null,null,Courses.COLUMN_COURSE_TITLE );
+
+//        return new CursorLoader( this ){
+//            @Override
+//            public Cursor loadInBackground() {
+//
+//                SQLiteDatabase db=mNoteKeeperOpenHelper.getReadableDatabase();
+//
+//                String[] courseColumn={
+//                        CourseInfoEntry.COLUMN_COURSE_TITLE,
+//                        CourseInfoEntry.COLUMN_COURSE_ID,
+//                        CourseInfoEntry._ID
+//                };
+//                return  db.query( CourseInfoEntry.TABLE_NAME,courseColumn,null,null,null,null,
+//                        CourseInfoEntry.COLUMN_COURSE_TITLE );
+//            }
+//        };
     }
 
     private CursorLoader createLoaderNotes() {
